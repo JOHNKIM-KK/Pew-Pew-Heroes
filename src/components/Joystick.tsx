@@ -42,6 +42,8 @@ const Joystick: React.FC<JoystickProps> = ({
     }
   }, []);
 
+  console.log("22");
+
   useEffect(() => {
     updateJoystickCenter();
     window.addEventListener("resize", updateJoystickCenter);
