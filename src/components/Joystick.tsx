@@ -71,13 +71,10 @@ const Joystick: React.FC<JoystickProps> = ({
   );
 
   // 터치/마우스 이벤트 처리
-  const handleStart = useCallback(
-    (clientX: number, clientY: number) => {
-      setIsDragging(true);
-      updateJoystickCenter();
-    },
-    [updateJoystickCenter]
-  );
+  const handleStart = useCallback(() => {
+    setIsDragging(true);
+    updateJoystickCenter();
+  }, [updateJoystickCenter]);
 
   const handleMove = useCallback(
     (clientX: number, clientY: number) => {
@@ -106,8 +103,8 @@ const Joystick: React.FC<JoystickProps> = ({
   }, [onMove]);
 
   // 마우스 이벤트
-  const handleMouseDown = (e: React.MouseEvent) => {
-    handleStart(e.clientX, e.clientY);
+  const handleMouseDown = () => {
+    handleStart();
   };
 
   const handleMouseMove = useCallback(
@@ -122,9 +119,8 @@ const Joystick: React.FC<JoystickProps> = ({
   }, [handleEnd]);
 
   // 터치 이벤트
-  const handleTouchStart = (e: React.TouchEvent) => {
-    const touch = e.touches[0];
-    handleStart(touch.clientX, touch.clientY);
+  const handleTouchStart = () => {
+    handleStart();
   };
 
   const handleTouchMove = useCallback(
