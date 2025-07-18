@@ -1,5 +1,6 @@
 .game-setup-page {
-  min-height: 100vh;
+  min-height: 80vh;
+  width: 100vw;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
   padding: 20px;
