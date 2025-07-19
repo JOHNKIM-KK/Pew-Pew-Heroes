@@ -21,10 +21,6 @@ body {
   padding: 0;
 }
 
-.App {
-  min-height: 100vh;
-}
-
 /* 모바일 뷰포트 최적화 */
 @media (max-width: 768px) {
   body {

@@ -30,6 +30,8 @@ const GamePage: React.FC = () => {
   const gameStatsRef = useRef(gameStats);
   gameStatsRef.current = gameStats;
 
+  const gamePageRef = useRef<HTMLDivElement>(null);
+
   const [playerPosition, setPlayerPosition] = useState<Position>({
     x: window.innerWidth / 2,
     y: window.innerHeight / 2,
@@ -72,7 +74,7 @@ const GamePage: React.FC = () => {
       setGameStats((prev) => ({
         ...prev,
         zombiesKilled: prev.zombiesKilled + 1,
-        score: prev.score + 100,
+        score: prev.score + 50,
       }));
     },
   });
@@ -481,9 +483,9 @@ const GamePage: React.FC = () => {
     ctx.fillStyle = "#ffffff";
     ctx.font = "16px Arial";
     ctx.textAlign = "left";
-    ctx.fillText(`점수: ${gameStatsRef.current.score}`, 10, 30);
-    ctx.fillText(`처치: ${gameStatsRef.current.zombiesKilled}`, 10, 55);
-    ctx.fillText(`시간: ${gameStatsRef.current.timeAlive}s`, 10, 80);
+    // ctx.fillText(`점수: ${gameStatsRef.current.score}`, 10, 30);
+    // ctx.fillText(`처치: ${gameStatsRef.current.zombiesKilled}`, 10, 55);
+    // ctx.fillText(`시간: ${gameStatsRef.current.timeAlive}s`, 10, 80);
   }, [weaponDrops, playerImage]);
 
   // drawGame ref 관리
@@ -496,32 +498,33 @@ const GamePage: React.FC = () => {
   };
 
   return (
-    <div className="game-page">
+    <div className="game-page" ref={gamePageRef}>
       {/* 게임 UI */}
-      {/* <div className="game-ui">
+      <div className="game-ui">
         <div className="stats-panel">
           <div className="stat-item">
-            <span className="stat-label">점수</span>
+            <span className="stat-label">🏆</span>
             <span className="stat-value">{gameStats.score}</span>
           </div>
           <div className="stat-item">
-            <span className="stat-label">처치</span>
+            <span className="stat-label">💀</span>
             <span className="stat-value">{gameStats.zombiesKilled}</span>
           </div>
           <div className="stat-item">
-            <span className="stat-label">시간</span>
+            <span className="stat-label">⚔️</span>
+            <span className="stat-value">
+              {gameStats.currentWeapon === "pistol" && "🔫"}
+              {gameStats.currentWeapon === "flamethrower" && "🔥"}
+              {gameStats.currentWeapon === "missile" && "🚀"}
+            </span>
+          </div>
+
+          <div className="stat-item">
+            <span className="stat-label">⏱️</span>
             <span className="stat-value">{gameStats.timeAlive}s</span>
           </div>
         </div>
-
-        <div className="weapon-indicator">
-          <span className="weapon-icon">
-            {gameStats.currentWeapon === "pistol" && "🔫"}
-            {gameStats.currentWeapon === "flamethrower" && "🔥"}
-            {gameStats.currentWeapon === "missile" && "🚀"}
-          </span>
-        </div>
-      </div> */}
+      </div>
 
       {/* 게임 캔버스 */}
       <canvas ref={canvasRef} className="game-canvas" />

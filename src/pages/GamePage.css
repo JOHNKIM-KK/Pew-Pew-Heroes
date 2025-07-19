@@ -1,12 +1,17 @@
 .game-page {
   position: relative;
   width: 100vw;
-  height: 100vh;
-  overflow: hidden;
+  height: 100vh; /* fallback for older browsers */
+  height: 100dvh; /* dynamic viewport height for mobile browsers */
   background: #1a1a1a;
   user-select: none;
   -webkit-user-select: none;
   -webkit-touch-callout: none;
+  /* 모바일 브라우저 최적화 */
+  overflow: hidden;
+  position: fixed;
+  top: 0;
+  left: 0;
 }
 
 .game-ui {
@@ -21,16 +26,14 @@
 .stats-panel {
   display: flex;
   justify-content: space-between;
-  padding: 15px 20px;
-  background: rgba(0, 0, 0, 0.7);
-  backdrop-filter: blur(10px);
+  padding: 10px 20px;
 }
 
 .stat-item {
   display: flex;
-  flex-direction: column;
+  gap: 10px;
   align-items: center;
-  color: white;
+  padding: 5px 10px;
 }
 
 .stat-label {
@@ -42,7 +45,25 @@
 .stat-value {
   font-size: 1.2rem;
   font-weight: bold;
-  color: #4ecdc4;
+  color: yellow;
+}
+
+.weapon-icon {
+  font-size: 1.4rem;
+  text-shadow: 0 0 10px currentColor;
+  animation: weaponPulse 2s ease-in-out infinite;
+}
+
+@keyframes weaponPulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 0.8;
+  }
 }
 
 .weapon-indicator {
@@ -114,8 +135,18 @@
 
 /* 모바일 최적화 */
 @media (max-width: 480px) {
+  .game-page {
+    /* 모바일에서 주소창/네비게이션 바 고려 */
+    height: 100vh;
+    height: 100dvh;
+    height: -webkit-fill-available; /* iOS Safari 지원 */
+  }
+
   .stats-panel {
     padding: 10px 15px;
+    /* 안전 영역 고려 */
+    padding-top: max(10px, env(safe-area-inset-top));
+    padding-bottom: max(10px, env(safe-area-inset-bottom));
   }
 
   .stat-label {
@@ -129,8 +160,8 @@
   .weapon-indicator {
     width: 50px;
     height: 50px;
-    top: 15px;
-    right: 15px;
+    top: max(15px, env(safe-area-inset-top) + 5px);
+    right: max(15px, env(safe-area-inset-right) + 5px);
   }
 
   .weapon-icon {
@@ -140,7 +171,14 @@
   .joystick-area {
     width: 100px;
     height: 100px;
-    bottom: 15px;
-    right: 15px;
+    bottom: max(15px, env(safe-area-inset-bottom) + 5px);
+    right: max(15px, env(safe-area-inset-right) + 5px);
+  }
+}
+
+/* iOS Safari 특별 처리 */
+@supports (-webkit-touch-callout: none) {
+  .game-page {
+    height: -webkit-fill-available;
   }
 }
