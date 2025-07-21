@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import Joystick from "../components/Joystick";
 import { useZombies } from "../hooks/useZombies";
-import { useWeapons } from "../hooks/useWeapons";
+import { useWeapons, WEAPON_DURATION } from "../hooks/useWeapons";
 import {
   checkPlayerZombieCollision,
   checkBulletZombieCollisions,
@@ -26,6 +26,7 @@ const GamePage: React.FC = () => {
     zombiesKilled: 0,
     timeAlive: 0,
     currentWeapon: "pistol",
+    weaponExpiryTime: null, // 무기 만료 시간 추가
   });
   const gameStatsRef = useRef(gameStats);
   gameStatsRef.current = gameStats;
@@ -89,6 +90,7 @@ const GamePage: React.FC = () => {
     removeBullet,
     startWeaponSpawning,
     stopWeaponSpawning,
+    checkWeaponExpiry,
     clearAll: clearWeapons,
   } = useWeapons({
     canvasWidth: canvasSize.x,
@@ -96,10 +98,20 @@ const GamePage: React.FC = () => {
     playerPosition,
     currentWeapon: gameStats.currentWeapon,
     onWeaponPickup: (weaponType) => {
+      const expiryTime =
+        weaponType === "pistol" ? null : Date.now() + WEAPON_DURATION; // 15초 지속
       setGameStats((prev) => ({
         ...prev,
         currentWeapon: weaponType,
+        weaponExpiryTime: expiryTime,
         score: prev.score + 50,
+      }));
+    },
+    onWeaponExpire: () => {
+      setGameStats((prev) => ({
+        ...prev,
+        currentWeapon: "pistol",
+        weaponExpiryTime: null,
       }));
     },
   });
@@ -188,6 +200,7 @@ const GamePage: React.FC = () => {
       if (currentTime - lastTimeRef.current >= 16) {
         // 60fps
         // 플레이어 업데이트
+
         if (joystickDirectionRef.current.distance > 0) {
           const speed = 3;
           setPlayerPosition((prev) => {
@@ -208,6 +221,8 @@ const GamePage: React.FC = () => {
             return { x: newX, y: newY };
           });
         }
+
+        checkWeaponExpiry(gameStatsRef.current.weaponExpiryTime);
 
         // 게임 시스템 업데이트
         updateZombiesRef.current();
@@ -511,11 +526,19 @@ const GamePage: React.FC = () => {
             <span className="stat-value">{gameStats.zombiesKilled}</span>
           </div>
           <div className="stat-item">
-            <span className="stat-label">⚔️</span>
-            <span className="stat-value">
+            <span className="stat-label">
+              {" "}
               {gameStats.currentWeapon === "pistol" && "🔫"}
               {gameStats.currentWeapon === "flamethrower" && "🔥"}
               {gameStats.currentWeapon === "missile" && "🚀"}
+            </span>
+            <span className="stat-value">
+              {gameStats.weaponExpiryTime
+                ? `${Math.max(
+                    0,
+                    Math.ceil((gameStats.weaponExpiryTime - Date.now()) / 1000)
+                  )}`
+                : "∞"}
             </span>
           </div>
 

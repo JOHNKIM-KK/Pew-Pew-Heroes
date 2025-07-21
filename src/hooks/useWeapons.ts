@@ -7,6 +7,8 @@ import type {
   Zombie,
 } from "../types/GameTypes";
 
+export const WEAPON_DURATION = 7000;
+
 const BULLET_SPEED = 8;
 const PISTOL_FIRE_RATE = 300; // 300ms 간격
 const WEAPON_SPAWN_INTERVAL = 10000; // 10초
@@ -18,6 +20,7 @@ interface UseWeaponsProps {
   playerPosition: Position;
   currentWeapon: WeaponType;
   onWeaponPickup: (weaponType: WeaponType) => void;
+  onWeaponExpire: () => void; // 무기 만료 콜백 추가
 }
 
 export const useWeapons = ({
@@ -26,6 +29,7 @@ export const useWeapons = ({
   playerPosition,
   currentWeapon,
   onWeaponPickup,
+  onWeaponExpire,
 }: UseWeaponsProps) => {
   const [bullets, setBullets] = useState<Bullet[]>([]);
   const [weaponDrops, setWeaponDrops] = useState<Weapon[]>([]);
@@ -229,6 +233,15 @@ export const useWeapons = ({
     });
   }, [weaponDrops, onWeaponPickup]);
 
+  const checkWeaponExpiry = useCallback(
+    (weaponExpiryTime: number | null) => {
+      if (weaponExpiryTime && Date.now() > weaponExpiryTime) {
+        onWeaponExpire();
+      }
+    },
+    [onWeaponExpire]
+  );
+
   // 총알 제거
   const removeBullet = useCallback((bulletId: string) => {
     setBullets((prev) => prev.filter((bullet) => bullet.id !== bulletId));
@@ -249,6 +262,7 @@ export const useWeapons = ({
     removeBullet,
     startWeaponSpawning,
     stopWeaponSpawning,
+    checkWeaponExpiry,
     clearAll,
   };
 };
