@@ -8,6 +8,7 @@ export interface Zombie {
   position: Position;
   targetPosition: Position;
   health: number;
+  maxHealth: number;
   speed: number;
   angle: number;
   rotationSpeed: number;

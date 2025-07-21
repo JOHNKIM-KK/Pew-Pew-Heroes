@@ -371,7 +371,7 @@ const GamePage: React.FC = () => {
         healthBarHeight
       );
 
-      const healthPercent = zombie.health / 100;
+      const healthPercent = zombie.health / zombie.maxHealth;
       ctx.fillStyle = healthPercent > 0.5 ? "#4caf50" : "#f44336";
       ctx.fillRect(
         zombie.position.x - healthBarWidth / 2,

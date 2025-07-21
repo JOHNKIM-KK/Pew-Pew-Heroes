@@ -10,6 +10,7 @@ const ZOMBIE_TYPES = {
   "#8B0000": {
     // 빨간색 - 빠르고 작은 좀비
     health: 50,
+    maxHealth: 50,  
     speed: 1.0 + Math.random() * 0.5,
     size: 15 + Math.random() * 5,
     reward: 50,
@@ -18,6 +19,7 @@ const ZOMBIE_TYPES = {
   "#A0522D": {
     // 갈색 - 일반 좀비
     health: 100,
+    maxHealth: 100,
     speed: 0.7 + Math.random() * 0.3,
     size: 20 + Math.random() * 8,
     reward: 100,
@@ -26,6 +28,7 @@ const ZOMBIE_TYPES = {
   "#556B2F": {
     // 올리브색 - 강한 좀비
     health: 150,
+    maxHealth: 150,
     speed: 0.4 + Math.random() * 0.3,
     size: 25 + Math.random() * 10,
     reward: 200,
@@ -34,6 +37,7 @@ const ZOMBIE_TYPES = {
   "#2F4F4F": {
     // 진한 회색 - 탱크 좀비
     health: 250,
+    maxHealth: 250,
     speed: 0.3 + Math.random() * 0.2,
     size: 30 + Math.random() * 15,
     reward: 350,
@@ -42,6 +46,7 @@ const ZOMBIE_TYPES = {
   "#8B4513": {
     // 새들브라운 - 엘리트 좀비
     health: 200,
+    maxHealth: 200,
     speed: 0.6 + Math.random() * 0.4,
     size: 28 + Math.random() * 12,
     reward: 300,
@@ -127,6 +132,7 @@ export const useZombies = ({
             y: playerPositionRef.current.y,
           },
           health: zombieType.health,
+          maxHealth: zombieType.health,
           speed: zombieType.speed,
           angle: Math.random() * Math.PI * 2,
           rotationSpeed: (Math.random() - 0.5) * 0.02,
