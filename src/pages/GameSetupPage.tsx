@@ -2,9 +2,7 @@ import React, { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import "./GameSetupPage.css";
 
-interface GameSetupProps {}
-
-const GameSetupPage: React.FC<GameSetupProps> = () => {
+const GameSetupPage: React.FC = () => {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [isImageLoaded, setIsImageLoaded] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);

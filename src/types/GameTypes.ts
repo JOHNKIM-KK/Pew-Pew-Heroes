@@ -13,6 +13,7 @@ export interface Zombie {
   rotationSpeed: number;
   size: number;
   color: string;
+  reward: number;
 }
 
 export interface Player {

@@ -6,6 +6,49 @@ const ZOMBIE_SPAWN_INTERVAL = 2000; // 2초마다
 const ZOMBIES_PER_SPAWN = 2; // 한 번에 2마리씩
 const ZOMBIE_COLORS = ["#8B0000", "#A0522D", "#556B2F", "#2F4F4F", "#8B4513"];
 
+const ZOMBIE_TYPES = {
+  "#8B0000": {
+    // 빨간색 - 빠르고 작은 좀비
+    health: 50,
+    speed: 1.0 + Math.random() * 0.5,
+    size: 15 + Math.random() * 5,
+    reward: 50,
+    name: "Fast",
+  },
+  "#A0522D": {
+    // 갈색 - 일반 좀비
+    health: 100,
+    speed: 0.7 + Math.random() * 0.3,
+    size: 20 + Math.random() * 8,
+    reward: 100,
+    name: "Normal",
+  },
+  "#556B2F": {
+    // 올리브색 - 강한 좀비
+    health: 150,
+    speed: 0.4 + Math.random() * 0.3,
+    size: 25 + Math.random() * 10,
+    reward: 200,
+    name: "Strong",
+  },
+  "#2F4F4F": {
+    // 진한 회색 - 탱크 좀비
+    health: 250,
+    speed: 0.3 + Math.random() * 0.2,
+    size: 30 + Math.random() * 15,
+    reward: 350,
+    name: "Tank",
+  },
+  "#8B4513": {
+    // 새들브라운 - 엘리트 좀비
+    health: 200,
+    speed: 0.6 + Math.random() * 0.4,
+    size: 28 + Math.random() * 12,
+    reward: 300,
+    name: "Elite",
+  },
+};
+
 interface UseZombiesProps {
   canvasWidth: number;
   canvasHeight: number;
@@ -15,7 +58,6 @@ interface UseZombiesProps {
 
 export const useZombies = ({
   canvasWidth,
-
   canvasHeight,
   playerPosition,
   onZombieKilled,
@@ -72,6 +114,11 @@ export const useZombies = ({
             y = -50;
         }
 
+        const zombieColor =
+          ZOMBIE_COLORS[Math.floor(Math.random() * ZOMBIE_COLORS.length)];
+        const zombieType =
+          ZOMBIE_TYPES[zombieColor as keyof typeof ZOMBIE_TYPES];
+
         newZombies.push({
           id: `zombie-${zombieIdCounter.current++}`,
           position: { x, y },
@@ -79,13 +126,13 @@ export const useZombies = ({
             x: playerPositionRef.current.x,
             y: playerPositionRef.current.y,
           },
-          health: 100,
-          speed: 0.5 + Math.random() * 0.5,
+          health: zombieType.health,
+          speed: zombieType.speed,
           angle: Math.random() * Math.PI * 2,
           rotationSpeed: (Math.random() - 0.5) * 0.02,
-          size: 20 + Math.random() * 10,
-          color:
-            ZOMBIE_COLORS[Math.floor(Math.random() * ZOMBIE_COLORS.length)],
+          size: zombieType.size,
+          reward: zombieType.reward,
+          color: zombieColor,
         });
       }
 
