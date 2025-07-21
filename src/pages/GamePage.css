@@ -133,6 +133,27 @@
   pointer-events: auto;
 }
 
+.weapon-timer {
+  animation: pulse 1s infinite;
+}
+
+.weapon-timer .stat-value {
+  color: #ff6b6b;
+  font-weight: bold;
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
 /* 모바일 최적화 */
 @media (max-width: 480px) {
   .game-page {

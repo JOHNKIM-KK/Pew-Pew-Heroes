@@ -49,6 +49,7 @@ export interface GameStats {
   zombiesKilled: number;
   timeAlive: number;
   currentWeapon: WeaponType;
+  weaponExpiryTime: number | null; // 무기 만료 시간
 }
 
 export interface JoystickDirection {
